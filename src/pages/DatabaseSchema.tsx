@@ -1,180 +1,231 @@
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
+import { Button } from '@/components/ui/button';
+import { ChevronRight, Database, List, Table } from 'lucide-react';
 
 const DatabaseSchema = () => {
   return (
-    <div className="container mx-auto py-8 px-4">
-      <h1 className="text-3xl font-bold mb-6">База данных ветеринарной клиники</h1>
-      
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mb-8">
-        <SchemaCard 
-          title="Животные (patients)" 
-          description="Информация о пациентах клиники"
-          fields={[
-            { name: "patient_id", type: "INTEGER", constraint: "PRIMARY KEY" },
-            { name: "owner_id", type: "INTEGER", constraint: "FOREIGN KEY (owners)" },
-            { name: "name", type: "VARCHAR(100)", constraint: "NOT NULL" },
-            { name: "species", type: "VARCHAR(50)", constraint: "NOT NULL" },
-            { name: "breed", type: "VARCHAR(100)", constraint: "" },
-            { name: "date_of_birth", type: "DATE", constraint: "" },
-            { name: "gender", type: "VARCHAR(10)", constraint: "" },
-            { name: "weight", type: "DECIMAL(5,2)", constraint: "" },
-            { name: "microchip_id", type: "VARCHAR(50)", constraint: "UNIQUE" },
-            { name: "registration_date", type: "DATE", constraint: "NOT NULL" },
-          ]}
-        />
-
-        <SchemaCard 
-          title="Владельцы (owners)" 
-          description="Владельцы животных"
-          fields={[
-            { name: "owner_id", type: "INTEGER", constraint: "PRIMARY KEY" },
-            { name: "first_name", type: "VARCHAR(100)", constraint: "NOT NULL" },
-            { name: "last_name", type: "VARCHAR(100)", constraint: "NOT NULL" },
-            { name: "phone", type: "VARCHAR(20)", constraint: "NOT NULL" },
-            { name: "email", type: "VARCHAR(100)", constraint: "" },
-            { name: "address", type: "VARCHAR(255)", constraint: "" },
-            { name: "registration_date", type: "DATE", constraint: "NOT NULL" },
-          ]}
-        />
-
-        <SchemaCard 
-          title="Сотрудники (staff)" 
-          description="Врачи и другие сотрудники клиники"
-          fields={[
-            { name: "staff_id", type: "INTEGER", constraint: "PRIMARY KEY" },
-            { name: "first_name", type: "VARCHAR(100)", constraint: "NOT NULL" },
-            { name: "last_name", type: "VARCHAR(100)", constraint: "NOT NULL" },
-            { name: "position", type: "VARCHAR(100)", constraint: "NOT NULL" },
-            { name: "specialization", type: "VARCHAR(100)", constraint: "" },
-            { name: "phone", type: "VARCHAR(20)", constraint: "NOT NULL" },
-            { name: "email", type: "VARCHAR(100)", constraint: "" },
-            { name: "hire_date", type: "DATE", constraint: "NOT NULL" },
-          ]}
-        />
-
-        <SchemaCard 
-          title="Приемы (appointments)" 
-          description="Запись о приеме животного"
-          fields={[
-            { name: "appointment_id", type: "INTEGER", constraint: "PRIMARY KEY" },
-            { name: "patient_id", type: "INTEGER", constraint: "FOREIGN KEY (patients)" },
-            { name: "staff_id", type: "INTEGER", constraint: "FOREIGN KEY (staff)" },
-            { name: "appointment_date", type: "DATETIME", constraint: "NOT NULL" },
-            { name: "reason", type: "VARCHAR(255)", constraint: "NOT NULL" },
-            { name: "status", type: "VARCHAR(20)", constraint: "NOT NULL" },
-            { name: "notes", type: "TEXT", constraint: "" },
-          ]}
-        />
-
-        <SchemaCard 
-          title="Диагнозы (diagnoses)" 
-          description="Диагнозы, поставленные животным"
-          fields={[
-            { name: "diagnosis_id", type: "INTEGER", constraint: "PRIMARY KEY" },
-            { name: "appointment_id", type: "INTEGER", constraint: "FOREIGN KEY (appointments)" },
-            { name: "condition_name", type: "VARCHAR(200)", constraint: "NOT NULL" },
-            { name: "description", type: "TEXT", constraint: "" },
-            { name: "diagnosis_date", type: "DATE", constraint: "NOT NULL" },
-          ]}
-        />
-
-        <SchemaCard 
-          title="Лечение (treatments)" 
-          description="Назначенное лечение"
-          fields={[
-            { name: "treatment_id", type: "INTEGER", constraint: "PRIMARY KEY" },
-            { name: "diagnosis_id", type: "INTEGER", constraint: "FOREIGN KEY (diagnoses)" },
-            { name: "treatment_name", type: "VARCHAR(200)", constraint: "NOT NULL" },
-            { name: "description", type: "TEXT", constraint: "" },
-            { name: "start_date", type: "DATE", constraint: "NOT NULL" },
-            { name: "end_date", type: "DATE", constraint: "" },
-            { name: "notes", type: "TEXT", constraint: "" },
-          ]}
-        />
-
-        <SchemaCard 
-          title="Медикаменты (medications)" 
-          description="Назначенные медикаменты"
-          fields={[
-            { name: "medication_id", type: "INTEGER", constraint: "PRIMARY KEY" },
-            { name: "treatment_id", type: "INTEGER", constraint: "FOREIGN KEY (treatments)" },
-            { name: "name", type: "VARCHAR(100)", constraint: "NOT NULL" },
-            { name: "dosage", type: "VARCHAR(100)", constraint: "NOT NULL" },
-            { name: "frequency", type: "VARCHAR(100)", constraint: "NOT NULL" },
-            { name: "start_date", type: "DATE", constraint: "NOT NULL" },
-            { name: "end_date", type: "DATE", constraint: "" },
-            { name: "instructions", type: "TEXT", constraint: "" },
-          ]}
-        />
-
-        <SchemaCard 
-          title="Вакцинации (vaccinations)" 
-          description="История вакцинаций"
-          fields={[
-            { name: "vaccination_id", type: "INTEGER", constraint: "PRIMARY KEY" },
-            { name: "patient_id", type: "INTEGER", constraint: "FOREIGN KEY (patients)" },
-            { name: "staff_id", type: "INTEGER", constraint: "FOREIGN KEY (staff)" },
-            { name: "vaccine_name", type: "VARCHAR(100)", constraint: "NOT NULL" },
-            { name: "vaccination_date", type: "DATE", constraint: "NOT NULL" },
-            { name: "expiry_date", type: "DATE", constraint: "" },
-            { name: "batch_number", type: "VARCHAR(50)", constraint: "" },
-            { name: "notes", type: "TEXT", constraint: "" },
-          ]}
-        />
-
-        <SchemaCard 
-          title="Счета (invoices)" 
-          description="Выставленные счета"
-          fields={[
-            { name: "invoice_id", type: "INTEGER", constraint: "PRIMARY KEY" },
-            { name: "appointment_id", type: "INTEGER", constraint: "FOREIGN KEY (appointments)" },
-            { name: "owner_id", type: "INTEGER", constraint: "FOREIGN KEY (owners)" },
-            { name: "amount", type: "DECIMAL(10,2)", constraint: "NOT NULL" },
-            { name: "issue_date", type: "DATE", constraint: "NOT NULL" },
-            { name: "due_date", type: "DATE", constraint: "NOT NULL" },
-            { name: "status", type: "VARCHAR(20)", constraint: "NOT NULL" },
-            { name: "payment_method", type: "VARCHAR(50)", constraint: "" },
-          ]}
-        />
+    <div className="container mx-auto py-6 px-4">
+      <div className="bg-blue-100 border-l-4 border-blue-500 p-4 mb-6">
+        <div className="flex items-center">
+          <Database className="h-6 w-6 text-blue-500 mr-2" />
+          <h1 className="text-2xl font-bold text-blue-800">Конфигурация базы данных: Ветеринарная клиника</h1>
+        </div>
+        <p className="text-blue-700 mt-1">Версия 1.0</p>
       </div>
-
-      <Card className="mb-8">
-        <CardHeader>
-          <CardTitle>Диаграмма связей</CardTitle>
-          <CardDescription>Основные связи между таблицами</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="bg-slate-100 dark:bg-slate-800 p-6 rounded-lg overflow-auto">
-            <pre className="text-sm whitespace-pre-wrap">
-              {`Patients (1) ---- (*) Appointments
-Owners (1) ---- (*) Patients
-Staff (1) ---- (*) Appointments
-Appointments (1) ---- (*) Diagnoses
-Diagnoses (1) ---- (*) Treatments
-Treatments (1) ---- (*) Medications
-Patients (1) ---- (*) Vaccinations
-Appointments (1) ---- (1) Invoices
-Staff (1) ---- (*) Vaccinations`}
-            </pre>
+      
+      <div className="flex gap-4 mb-6">
+        <div className="w-64 bg-gray-100 border rounded shadow-sm">
+          <div className="bg-blue-700 text-white p-2 font-medium flex items-center">
+            <List className="h-4 w-4 mr-2" />
+            Навигация
           </div>
-        </CardContent>
-      </Card>
+          <div className="p-1">
+            <Button variant="ghost" className="w-full justify-start text-blue-800 font-medium hover:bg-blue-50">
+              <ChevronRight className="h-4 w-4 mr-2" />
+              Справочники
+            </Button>
+            <Button variant="ghost" className="w-full justify-start text-blue-800 font-medium hover:bg-blue-50">
+              <ChevronRight className="h-4 w-4 mr-2" />
+              Документы
+            </Button>
+            <Button variant="ghost" className="w-full justify-start bg-blue-50 text-blue-800 font-medium">
+              <ChevronRight className="h-4 w-4 mr-2" />
+              Таблицы базы данных
+            </Button>
+            <Button variant="ghost" className="w-full justify-start text-blue-800 font-medium hover:bg-blue-50">
+              <ChevronRight className="h-4 w-4 mr-2" />
+              Отчеты
+            </Button>
+          </div>
+        </div>
+        
+        <div className="flex-1">
+          <Card className="shadow-sm border-blue-200 mb-6">
+            <CardHeader className="bg-blue-50 border-b border-blue-200 pb-3">
+              <CardTitle className="text-blue-800 flex items-center">
+                <Table className="h-5 w-5 mr-2" />
+                Структура таблиц базы данных
+              </CardTitle>
+              <CardDescription className="text-blue-600">
+                Основные сущности и их атрибуты
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="pt-4">
+              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                <SchemaCard 
+                  title="Справочник.Животные" 
+                  description="Картотека пациентов клиники"
+                  fields={[
+                    { name: "Код", type: "Число(10)", constraint: "Первичный ключ" },
+                    { name: "Владелец", type: "СправочникСсылка.Владельцы", constraint: "Не пустой" },
+                    { name: "Наименование", type: "Строка(100)", constraint: "Не пустой" },
+                    { name: "Вид", type: "Строка(50)", constraint: "Не пустой" },
+                    { name: "Порода", type: "Строка(100)", constraint: "" },
+                    { name: "ДатаРождения", type: "Дата", constraint: "" },
+                    { name: "Пол", type: "Строка(10)", constraint: "" },
+                    { name: "Вес", type: "Число(5,2)", constraint: "" },
+                    { name: "НомерЧипа", type: "Строка(50)", constraint: "Уникальный" },
+                    { name: "ДатаРегистрации", type: "Дата", constraint: "Не пустой" },
+                  ]}
+                />
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Примечания по использованию</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <ul className="list-disc pl-5 space-y-2">
-            <li>База данных спроектирована для отслеживания пациентов, владельцев, приемов и связанных медицинских данных</li>
-            <li>Используйте индексы для полей, по которым часто выполняется поиск (patient_id, owner_id, appointment_date и т.д.)</li>
-            <li>Рекомендуется настроить внешние ключи с каскадным обновлением (ON UPDATE CASCADE)</li>
-            <li>Для удаления лучше использовать подход "мягкого удаления" - добавьте поле is_active или deleted_at в таблицы</li>
-          </ul>
-        </CardContent>
-      </Card>
+                <SchemaCard 
+                  title="Справочник.Владельцы" 
+                  description="Владельцы животных"
+                  fields={[
+                    { name: "Код", type: "Число(10)", constraint: "Первичный ключ" },
+                    { name: "Имя", type: "Строка(100)", constraint: "Не пустой" },
+                    { name: "Фамилия", type: "Строка(100)", constraint: "Не пустой" },
+                    { name: "Телефон", type: "Строка(20)", constraint: "Не пустой" },
+                    { name: "ЭлПочта", type: "Строка(100)", constraint: "" },
+                    { name: "Адрес", type: "Строка(255)", constraint: "" },
+                    { name: "ДатаРегистрации", type: "Дата", constraint: "Не пустой" },
+                  ]}
+                />
+
+                <SchemaCard 
+                  title="Справочник.Сотрудники" 
+                  description="Врачи и сотрудники клиники"
+                  fields={[
+                    { name: "Код", type: "Число(10)", constraint: "Первичный ключ" },
+                    { name: "Имя", type: "Строка(100)", constraint: "Не пустой" },
+                    { name: "Фамилия", type: "Строка(100)", constraint: "Не пустой" },
+                    { name: "Должность", type: "Строка(100)", constraint: "Не пустой" },
+                    { name: "Специализация", type: "Строка(100)", constraint: "" },
+                    { name: "Телефон", type: "Строка(20)", constraint: "Не пустой" },
+                    { name: "ЭлПочта", type: "Строка(100)", constraint: "" },
+                    { name: "ДатаПриема", type: "Дата", constraint: "Не пустой" },
+                  ]}
+                />
+
+                <SchemaCard 
+                  title="Документ.Приемы" 
+                  description="Регистрация приема животного"
+                  fields={[
+                    { name: "Номер", type: "Число(10)", constraint: "Первичный ключ" },
+                    { name: "Пациент", type: "СправочникСсылка.Животные", constraint: "Не пустой" },
+                    { name: "Сотрудник", type: "СправочникСсылка.Сотрудники", constraint: "Не пустой" },
+                    { name: "Дата", type: "ДатаВремя", constraint: "Не пустой" },
+                    { name: "Причина", type: "Строка(255)", constraint: "Не пустой" },
+                    { name: "Статус", type: "Строка(20)", constraint: "Не пустой" },
+                    { name: "Комментарий", type: "Текст", constraint: "" },
+                  ]}
+                />
+
+                <SchemaCard 
+                  title="Документ.Диагнозы" 
+                  description="Поставленные диагнозы"
+                  fields={[
+                    { name: "Номер", type: "Число(10)", constraint: "Первичный ключ" },
+                    { name: "Прием", type: "ДокументСсылка.Приемы", constraint: "Не пустой" },
+                    { name: "НаименованиеДиагноза", type: "Строка(200)", constraint: "Не пустой" },
+                    { name: "Описание", type: "Текст", constraint: "" },
+                    { name: "Дата", type: "Дата", constraint: "Не пустой" },
+                  ]}
+                />
+
+                <SchemaCard 
+                  title="Документ.Лечение" 
+                  description="Назначенное лечение"
+                  fields={[
+                    { name: "Номер", type: "Число(10)", constraint: "Первичный ключ" },
+                    { name: "Диагноз", type: "ДокументСсылка.Диагнозы", constraint: "Не пустой" },
+                    { name: "НаименованиеЛечения", type: "Строка(200)", constraint: "Не пустой" },
+                    { name: "Описание", type: "Текст", constraint: "" },
+                    { name: "ДатаНачала", type: "Дата", constraint: "Не пустой" },
+                    { name: "ДатаОкончания", type: "Дата", constraint: "" },
+                    { name: "Комментарий", type: "Текст", constraint: "" },
+                  ]}
+                />
+
+                <SchemaCard 
+                  title="Документ.Медикаменты" 
+                  description="Назначенные препараты"
+                  fields={[
+                    { name: "Номер", type: "Число(10)", constraint: "Первичный ключ" },
+                    { name: "Лечение", type: "ДокументСсылка.Лечение", constraint: "Не пустой" },
+                    { name: "Наименование", type: "Строка(100)", constraint: "Не пустой" },
+                    { name: "Дозировка", type: "Строка(100)", constraint: "Не пустой" },
+                    { name: "Частота", type: "Строка(100)", constraint: "Не пустой" },
+                    { name: "ДатаНачала", type: "Дата", constraint: "Не пустой" },
+                    { name: "ДатаОкончания", type: "Дата", constraint: "" },
+                    { name: "Инструкции", type: "Текст", constraint: "" },
+                  ]}
+                />
+
+                <SchemaCard 
+                  title="Документ.Вакцинации" 
+                  description="Учет вакцинаций"
+                  fields={[
+                    { name: "Номер", type: "Число(10)", constraint: "Первичный ключ" },
+                    { name: "Пациент", type: "СправочникСсылка.Животные", constraint: "Не пустой" },
+                    { name: "Сотрудник", type: "СправочникСсылка.Сотрудники", constraint: "Не пустой" },
+                    { name: "НазваниеВакцины", type: "Строка(100)", constraint: "Не пустой" },
+                    { name: "ДатаВакцинации", type: "Дата", constraint: "Не пустой" },
+                    { name: "ДатаСледующей", type: "Дата", constraint: "" },
+                    { name: "НомерПартии", type: "Строка(50)", constraint: "" },
+                    { name: "Комментарий", type: "Текст", constraint: "" },
+                  ]}
+                />
+
+                <SchemaCard 
+                  title="Документ.Счета" 
+                  description="Документы оплаты"
+                  fields={[
+                    { name: "Номер", type: "Число(10)", constraint: "Первичный ключ" },
+                    { name: "Прием", type: "ДокументСсылка.Приемы", constraint: "Не пустой" },
+                    { name: "Владелец", type: "СправочникСсылка.Владельцы", constraint: "Не пустой" },
+                    { name: "Сумма", type: "Число(10,2)", constraint: "Не пустой" },
+                    { name: "ДатаСоздания", type: "Дата", constraint: "Не пустой" },
+                    { name: "СрокОплаты", type: "Дата", constraint: "Не пустой" },
+                    { name: "Статус", type: "Строка(20)", constraint: "Не пустой" },
+                    { name: "СпособОплаты", type: "Строка(50)", constraint: "" },
+                  ]}
+                />
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="shadow-sm border-blue-200 mb-6">
+            <CardHeader className="bg-blue-50 border-b border-blue-200 pb-3">
+              <CardTitle className="text-blue-800">Схема взаимосвязей</CardTitle>
+              <CardDescription className="text-blue-600">Связи между таблицами конфигурации</CardDescription>
+            </CardHeader>
+            <CardContent className="pt-4">
+              <div className="bg-white border border-blue-200 p-4 rounded-lg overflow-auto">
+                <pre className="text-sm whitespace-pre-wrap text-blue-900 font-mono">
+                  {`Справочник.Животные (1) ---- (*) Документ.Приемы
+Справочник.Владельцы (1) ---- (*) Справочник.Животные
+Справочник.Сотрудники (1) ---- (*) Документ.Приемы
+Документ.Приемы (1) ---- (*) Документ.Диагнозы
+Документ.Диагнозы (1) ---- (*) Документ.Лечение
+Документ.Лечение (1) ---- (*) Документ.Медикаменты
+Справочник.Животные (1) ---- (*) Документ.Вакцинации
+Документ.Приемы (1) ---- (1) Документ.Счета
+Справочник.Сотрудники (1) ---- (*) Документ.Вакцинации`}
+                </pre>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="shadow-sm border-blue-200">
+            <CardHeader className="bg-blue-50 border-b border-blue-200 pb-3">
+              <CardTitle className="text-blue-800">Примечания по использованию</CardTitle>
+            </CardHeader>
+            <CardContent className="pt-4">
+              <ul className="list-disc pl-5 space-y-2 text-blue-900">
+                <li>Конфигурация разработана для ведения учета пациентов, приемов и медицинских данных в ветеринарной клинике</li>
+                <li>Рекомендуется использовать индексацию для полей поиска (Код, Номер, Наименование)</li>
+                <li>Настроены ссылочные поля с контролем целостности данных</li>
+                <li>Для удаления записей используется механизм пометки на удаление</li>
+                <li>Права доступа к данным настраиваются через роли пользователей</li>
+              </ul>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
     </div>
   );
 };
@@ -193,33 +244,31 @@ type SchemaCardProps = {
 
 const SchemaCard = ({ title, description, fields }: SchemaCardProps) => {
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>{title}</CardTitle>
-        <CardDescription>{description}</CardDescription>
+    <Card className="shadow-sm border-blue-200 mb-4">
+      <CardHeader className="bg-blue-50 border-b border-blue-200 py-2 px-3">
+        <CardTitle className="text-blue-800 text-sm font-medium">{title}</CardTitle>
+        <CardDescription className="text-blue-600 text-xs">{description}</CardDescription>
       </CardHeader>
-      <CardContent>
-        <div className="space-y-4">
-          <div className="bg-slate-100 dark:bg-slate-800 rounded p-3 overflow-x-auto">
-            <table className="min-w-full text-sm">
-              <thead>
-                <tr>
-                  <th className="text-left font-medium pb-2">Поле</th>
-                  <th className="text-left font-medium pb-2">Тип</th>
-                  <th className="text-left font-medium pb-2">Ограничения</th>
+      <CardContent className="p-0">
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="bg-blue-50">
+                <th className="text-left font-medium py-1 px-3 text-blue-700 text-xs border-b border-blue-200">Реквизит</th>
+                <th className="text-left font-medium py-1 px-3 text-blue-700 text-xs border-b border-blue-200">Тип</th>
+                <th className="text-left font-medium py-1 px-3 text-blue-700 text-xs border-b border-blue-200">Ограничения</th>
+              </tr>
+            </thead>
+            <tbody>
+              {fields.map((field, index) => (
+                <tr key={index} className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}>
+                  <td className="py-1 px-3 text-blue-800 text-xs border-b border-gray-100">{field.name}</td>
+                  <td className="py-1 px-3 text-blue-800 text-xs border-b border-gray-100">{field.type}</td>
+                  <td className="py-1 px-3 text-blue-800 text-xs border-b border-gray-100">{field.constraint}</td>
                 </tr>
-              </thead>
-              <tbody>
-                {fields.map((field, index) => (
-                  <tr key={index} className="border-t border-slate-200 dark:border-slate-700">
-                    <td className="py-2 pr-4 font-mono text-xs">{field.name}</td>
-                    <td className="py-2 pr-4 font-mono text-xs">{field.type}</td>
-                    <td className="py-2 font-mono text-xs">{field.constraint}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+              ))}
+            </tbody>
+          </table>
         </div>
       </CardContent>
     </Card>
